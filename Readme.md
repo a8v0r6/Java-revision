@@ -168,12 +168,94 @@ class MyException extends RuntimeException{
 
 This will give compile time error that exception is already called
 
+8. Can we override a static method?
 
+Static method belongs to class not instance, they cannot be overridden 
+only instance level methods can be overridden
 
+9. Errors and exceptions: 
 
+Both are of type throwable
 
+Errors : Occur when system level problem
+There is no recoverability, execution is stopped
+All errors are Unchecked and of type Error
+```
+OutOfMemoryError
+StackOverflowError
+```
 
+Exception : Occurs when there is code level problem
+We can gracefull handle the problem by logging, showing error reason (for some cases)
+with try catch we can handle exception,
+so the code execution keeps on going and doesn't stop when there is a problem
 
+there are Checked and Unchecked exceptions
+checked are compile time exceptions 
+```
+FileNotFoundException
+SQLException
+```
+at compile time it is checked whether file exists or not, sql connection can be made, etc
 
+Unchecked exceptions are runtime exception - they don't need to explicitly declared when we throw runtime exceptio
 
+10. Garbage Collectors :
 
+Clears memory in java heap
+
+1. Serial GC
+
+    How it works: Uses a single thread for all garbage collection work. It stops all application threads (Stop-The-World) during the process.
+
+    Best for: Small data sets (up to 100MB), single-processor machines, or client-side applications where low memory footprint is more important than pause times.
+
+    Flag: -XX:+UseSerialGC
+
+2. Parallel GC (Throughput Collector)
+
+    How it works: Similar to Serial GC but uses multiple threads for young generation collection. It is optimized for high throughput.
+
+    Best for: Batch processing, data analysis, and applications where the total "work done" is more important than occasional long pauses. This was the default in Java 8.
+
+    Flag: -XX:+UseParallelGC
+
+3. CMS (Concurrent Mark Sweep)
+
+    How it works: Designed to minimize pauses by performing most of its work (marking and sweeping) concurrently with the application threads.
+
+    Status: Deprecated in Java 9 and removed in Java 14. G1 is its successor.
+
+    Trade-off: It reduces pause times but consumes more CPU and can suffer from memory fragmentation (no compaction).
+
+4. G1 (Garbage First)
+
+    How it works: Divides the heap into many small regions. It tracks which regions are mostly "garbage" and collects those first (hence the name). It is the current default for most modern JVMs.
+
+    Best for: Large heaps (4GB+) where you want predictable, consistent pause times. It provides a balance between throughput and latency.
+
+    Flag: -XX:+UseG1GC
+
+5. ZGC (Z Garbage Collector)
+
+    How it works: A scalable, low-latency GC. It performs all expensive work concurrently, without stopping the execution of application threads for more than a few milliseconds, regardless of heap size.
+
+    Best for: Applications requiring extremely low latency (sub-millisecond) and very large heaps (up to 16TB).
+
+    Flag: -XX:+UseZGC
+
+6. Shenandoah
+
+    How it works: Similar to ZGC, it is an ultra-low-latency collector. Developed by Red Hat, it performs evacuation (moving objects to compact the heap) concurrently with the application threads.
+
+    Best for: Large heaps where pause times must stay low and consistent, even during compaction.
+
+    Flag: -XX:+UseShenandoahGC
+
+7. Epsilon
+
+    How it works: The "No-Op" collector. It handles memory allocation but does not reclaim any memory. When the heap is full, the JVM shuts down with an OutOfMemoryError.
+
+    Best for: Performance testing, short-lived jobs (serverless), or extremely memory-sensitive applications where you manage memory manually or know it won't overflow.
+
+    Flag: -XX:+UseEpsilonGC
