@@ -50,7 +50,7 @@ Java Tricky Questions part1
 
 5. Can a class have method with 2 interface with same name ?
 
-    Case I: 
+    Case I 
         
         ```
         interface A{
@@ -65,18 +65,17 @@ Java Tricky Questions part1
                 System.out.println("SameNameAndSignature.method");
             }
         }
-
         ```
     This will work because at runtime we are overriding the method in our concrete class but if we don't override there will be error
 
-    Case II:
+    Case II
 
         ```
         interface A{
             void method();
         }
         interface B {
-            int method();
+            int method(); 
         }
         public class SameNameAndSignature implements A, B {
 
@@ -93,7 +92,7 @@ Java Tricky Questions part1
         ```
     Here it will give complile time error here
 
-    Case III:
+    Case III
 
         ```
         interface A{
@@ -358,3 +357,38 @@ Clears memory in java heap
         }
     }
     ```
+12. Is hashmap thread safe?
+
+    No we can make it thread safe with Collections method
+    
+    ```
+    Map<String, Integer> map = new HashMap<>();
+
+    Collections.syncronizedMap(map);
+    ```
+    > one lock on entire map
+
+    Or use ConcurrentHashMap - bucket level lock, multiple threads can read and modify map. 
+
+13. Sealed classes
+
+14. Immutable class 
+
+    1. Make class final so it cannot be extended.
+    2. Make fields private final.
+    3. Do not provide setter methods.
+    3. In case of mutable object ref fields return only deep copy in constructor and getter method.
+
+    in Java 14 onwards we can use Records to create immutable class
+
+    ```
+    public record ImmutableClass(String name, int id, List<String> list) {
+        public ImmutableClass{
+            list = List.copyOf(list);
+            // unmodifiable list
+        }
+    }
+
+    ```
+
+ 
