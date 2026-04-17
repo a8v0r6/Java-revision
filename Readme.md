@@ -265,7 +265,96 @@ Clears memory in java heap
 11. Singleton Class
 
     To create singleton class - class with only one instance
+    1. EagerInitialization 
+    ```
+    class Singleton {
+        private static final Singleton singletonInstance = new Singleton();
+        
+        private Singleton() {
+        }
+
+        public static Singleton getInstance() {
+            return singletonInstance;
+        }
+    }
+
+    ```
+    Advantage: Created during class loading
+    Disadvantage: if class creation is complex (it has connections, file loaders), EagerInitialization will take a lot of time 
+
+    2. LazyInitilization
+
+    ```
+    class Singleton {
+        private static final Singleton singletonInstance ;
+        
+        private Singleton() {}
+
+        public static Singleton getInstance() {
+            if(singletonInstance == null) {
+                singletonInstance = new Singleton();
+            }
+            return singletonInstance;
+        }
+    }
+    ```
+    Initialized only first time when we create class
+
+    Disadvantage: if 2 threads are trying to create class at the same time then 2 instance would be created.
+
+    3. ThreadSafe Singleton
+
+    ```
+    class Singleton {
+        private static final Singleton singletonInstance ;
+        
+        private Singleton() {}
+
+        public static syncronized Singleton getInstance() {
+            if(singletonInstance == null) {
+                singletonInstance = new Singleton();
+            }
+            return singletonInstance;
+        }
+    }
+    ```
+
+    We are making the getter method syncronized so two threads won't call it at the same time.
+    not the best way because at the method it is a block level syncronization.
+    entire method is blocked.
     
+    4. DoubleCheckLocking 
 
+    
+    ```
+    class Singleton {
+        private static volatile Singleton singletonInstance ;
+        
+        private Singleton() {}
 
+        public static Singleton getInstance() {
+            if (singletonInstance == null) {
+                syncronized(Singleton.class) {
+                    if(singletonInstance == null) {
+                        singletonInstance = new Singleton();
+                    }
+                }
+            }
+            return singletonInstance;
+        }
+    }
+    ```
 
+    still not preferred
+
+    5. Enum Singleton
+
+    ```
+    public enum Singleton{
+        INSTANCE;
+
+        public void doSomething() {
+            System.out.println("Doing something");
+        }
+    }
+    ```
