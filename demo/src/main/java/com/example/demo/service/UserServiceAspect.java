@@ -10,22 +10,22 @@ import org.springframework.stereotype.Component;
 public class UserServiceAspect {
 
     // runs before execution
-    @Before(value="execution(* com.example.demo..*(..))")
+    @Before(value="execution(* com.example.demo.UserServiceAspect")
     public void beforeAdvice(JoinPoint joinPoint) {
         System.out.println("UserServiceAspect.beforeAdvice");
     }
 
-    @After(value = "execution(* com.example.demo..*(..))")
+    @After(value = "execution(* com.example.demo.UserServiceAspect")
     public void afterAdvice(JoinPoint joinPoint) {
         System.out.println("UserServiceAspect.afterAdvice");
     }
 
-    @AfterReturning(value = "execution(* com.example.demo..*(..))")
+    @AfterReturning(value = "execution(* com.example.demo.UserServiceAspect")
     public void afterReturning(JoinPoint joinPoint) {
         System.out.println("UserServiceAspect.afterReturning");
     }
 
-    @Around(value = "execution(* com.example.demo..*(..))")
+    @Around(value = "execution(* com.example.demo.UserServiceAspect")
     public void aroundAdvice(ProceedingJoinPoint joinPoint) {
         System.out.println("UserServiceAspect.aroundAdvice");
 
